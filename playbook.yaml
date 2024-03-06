@@ -1,0 +1,74 @@
+---
+- hosts: localhost
+  become: true
+  vars:
+    ext_interface: ens192
+    int_interface: ens224
+
+  tasks:
+  - name: install vim
+    apt: name=vim state=latest
+
+  - name: install net-tools
+    apt: name=net-tools state=latest
+
+  - name: install shorewall
+    apt: name=shorewall state=latest
+
+  - name: install dhcpd
+    apt: name=isc-dhcp-server state=latest
+
+  - name: enable shorewall
+    service:
+      name: shorewall
+      enabled: yes
+
+  - name: start shorewall
+    service:
+      name: shorewall
+      daemon-reload: yes
+
+  - name: set internal interface ip
+    command:
+      cmd: ifconfig {{ int_interface }} 192.168.10.1/24
+
+  - name: enable dhcpd
+    service:
+      name: isc-dhcp-server
+      enabled: yes
+
+  - name: copy dhcpd default config
+    template:
+      dest: /etc/default/isc-dhcp-server
+      src: isc-dhcp-server
+
+  - name: copy dhcpd config file
+    copy:
+      dest: /etc/dhcp/dhcpd.conf
+      src: dhcpd.conf
+
+  - name: copy shorewall config file
+    copy:
+      dest: /etc/shorewall/shorewall.conf
+      src: shorewall.conf
+
+  - name: copy interfaces file
+    template:
+      dest: /etc/shorewall/interfaces
+      src: interfaces
+
+  - name: copy policy file
+    copy:
+      dest: /etc/shorewall/policy
+      src: policy
+
+  - name: copy zones file
+    template:
+      dest: /etc/shorewall/zones
+      src: zones
+
+  - name: copy snat file
+    template:
+      dest: /etc/shorewall/snat
+      src: snat
+

@@ -1,0 +1,10 @@
+#SOURCE         DEST            POLICY          LOG LEVEL       LIMIT:BURST
+
+loc             $FW             ACCEPT          none
+loc             net             ACCEPT          none
+$FW             loc             ACCEPT          none
+$FW             net             ACCEPT          none
+net             $FW             ACCEPT          none
+net             all             DROP
+# THE FOLLOWING POLICY MUST BE LAST
+all             all             REJECT

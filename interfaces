@@ -1,0 +1,3 @@
+#ZONE   INTERFACE       OPTIONS
+net     {{ ext_interface }} -       dhcp,tcpflags,nosmurfs,routefilter,logmartians,sourceroute=0
+loc     {{ int_interface }} -       routeback

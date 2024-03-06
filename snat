@@ -1,0 +1,1 @@
+SNAT({{ ansible_facts['default_ipv4']['address'] }})       192.168.10.0/24        {{ ext_interface }}
