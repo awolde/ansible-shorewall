@@ -1,8 +1,13 @@
 # sets up shorewall on Debian 12/11
+I set this machine always when playing with ESXI.
 
-You just need two NICs.
+Create one more port group in your Esxi server and assign it vlan id 1 so that it wont collide with your LAN.
 
-Externale nic needs internet connection. Internal nic can be left unconfigured - it will assume 192.168.10.1/24 ip address.
+Create a VM with two nics, one attached to VM network (your lan) and one to vlan1 you just created.
+
+External nic (VM network) needs internet connection if you want to route traffic from your vms. Internal nic can be left unconfigured - it will assume 192.168.10.1/24 ip address. This is not permanent, use netplan or Network Manager to set it even after reboot. This is my TODO.
+
+The playbook also sets up DHCP server running on internal interface (vlan1).
 
 Clone this repo and run ansible playbook:
 
